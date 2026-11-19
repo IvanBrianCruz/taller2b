@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Taller GitHub, Git y Vercel — Guía Interactiva 4.º Año</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --bg-soft: #111830;
+      --card: #151e3a;
+      --card-2: #1a2547;
+      --text: #eef2ff;
+      --muted: #a5b4fc;
+      --muted-2: #94a3b8;
+      --accent: #38bdf8;
+      --accent-2: #818cf8;
+      --ok: #22c55e;
+      --warn: #f59e0b;
+      --border: rgba(148, 163, 184, 0.18);
+      --shadow: 0 14px 34px rgba(2, 6, 23, 0.45);
+      --radius: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background:
+        radial-gradient(circle at 12% 8%, rgba(56, 189, 248, 0.14), transparent 36%),
+        radial-gradient(circle at 88% 12%, rgba(129, 140, 248, 0.14), transparent 38%),
+        var(--bg);
+      color: var(--text);
+      line-height: 1.55;
+      min-height: 100vh;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    /* Topbar */
+    header.topbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(12px);
+      background: rgba(11, 16, 32, 0.84);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .topbar-inner {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0.75rem 1.25rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      font-weight: 700;
+      font-size: 1rem;
+      letter-spacing: 0.2px;
+    }
+
+    .brand-badge {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #061024;
+      font-weight: 800;
+      font-size: 0.75rem;
+      padding: 0.25rem 0.55rem;
+      border-radius: 999px;
+    }
+
+    nav.nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    nav.nav-links a {
+      color: var(--text);
+      font-size: 0.85rem;
+      padding: 0.35rem 0.7rem;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      transition: all 0.18s ease;
+    }
+
+    nav.nav-links a:hover {
+      border-color: var(--border);
+      background: rgba(56, 189, 248, 0.1);
+      text-decoration: none;
+    }
+
+    /* Layout */
+    main {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 1.5rem 1.25rem 3.5rem;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, rgba(21, 30, 58, 0.95), rgba(26, 37, 71, 0.88));
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 1.75rem;
+      box-shadow: var(--shadow);
+      margin-bottom: 1.75rem;
+    }
+
+    .hero-top {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--accent);
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      padding: 0.28rem 0.7rem;
+      border-radius: 999px;
+    }
+
+    h1 {
+      font-size: clamp(1.45rem, 2.8vw, 2.15rem);
+      line-height: 1.2;
+      margin-bottom: 0.55rem;
+    }
+
+    .hero p {
+      color: var(--muted-2);
+      max-width: 78ch;
+      font-size: 0.98rem;
+    }
+
+    .quick-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-top: 1.15rem;
+    }
+
+    .btn-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: var(--card-2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.48rem 0.85rem;
+      border-radius: 10px;
+      font-size: 0.86rem;
+      font-weight: 600;
+      transition: transform 0.14s ease, border-color 0.14s ease;
+    }
+
+    .btn-link:hover {
+      transform: translateY(-1px);
+      border-color: var(--accent);
+      text-decoration: none;
+    }
+
+    section.section {
+      margin-top: 2rem;
+    }
+
+    .section-header {
+      margin-bottom: 1rem;
+    }
+
+    .section-header h2 {
+      font-size: 1.35rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .section-header p {
+      color: var(--muted-2);
+      font-size: 0.92rem;
+    }
+
+    /* Slide embed */
+    .slide-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem;
+      box-shadow: var(--shadow);
+    }
+
+    .slide-frame-wrap {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 960 / 569;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #060913;
+      border: 1px solid rgba(148, 163, 184, 0.22);
+    }
+
+    .slide-frame-wrap iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    /* Commands & Personalizer */
+    .personalizer-bar {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem 1.15rem;
+      margin-bottom: 1.1rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 0.85rem;
+      align-items: end;
+    }
+
+    .field label {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--muted);
+      margin-bottom: 0.32rem;
+    }
+
+    .field input {
+      width: 100%;
+      background: #0c1226;
+      border: 1px solid rgba(148, 163, 184, 0.28);
+      color: var(--text);
+      border-radius: 10px;
+      padding: 0.52rem 0.7rem;
+      font-size: 0.88rem;
+      outline: none;
+    }
+
+    .field input:focus {
+      border-color: var(--accent);
+    }
+
+    .cmd-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1rem;
+    }
+
+    .cmd-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.1rem;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+    }
+
+    .cmd-card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 0.6rem;
+    }
+
+    .cmd-card h3 {
+      font-size: 1rem;
+      color: var(--text);
+    }
+
+    .cmd-card p.desc {
+      font-size: 0.86rem;
+      color: var(--muted-2);
+    }
+
+    .copy-btn {
+      background: rgba(56, 189, 248, 0.14);
+      color: var(--accent);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      border-radius: 8px;
+      padding: 0.35rem 0.65rem;
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.15s ease;
+    }
+
+    .copy-btn:hover {
+      background: rgba(56, 189, 248, 0.24);
+    }
+
+    .copy-btn.copied {
+      background: rgba(34, 197, 94, 0.18);
+      color: #4ade80;
+      border-color: rgba(34, 197, 94, 0.45);
+    }
+
+    pre.code-box {
+      background: #080d1c;
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      border-radius: 10px;
+      padding: 0.8rem 0.9rem;
+      overflow-x: auto;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size: 0.82rem;
+      line-height: 1.5;
+      color: #e2e8f0;
+      white-space: pre;
+    }
+
+    /* Interactive Flow Simulator */
+    .sim-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      box-shadow: var(--shadow);
+    }
+
+    .mode-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1.1rem;
+    }
+
+    .tab-btn {
+      background: #0d1429;
+      color: var(--muted-2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.5rem 0.9rem;
+      font-size: 0.86rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.22), rgba(129, 140, 248, 0.22));
+      color: var(--text);
+      border-color: var(--accent);
+    }
+
+    .pipeline {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.7rem;
+      margin-bottom: 1.1rem;
+    }
+
+    @media (max-width: 820px) {
+      .pipeline {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .pipeline {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .stage-node {
+      background: #0b1124;
+      border: 1px solid rgba(148, 163, 184, 0.22);
+      border-radius: 12px;
+      padding: 0.8rem;
+      transition: all 0.2s ease;
+    }
+
+    .stage-node.active {
+      border-color: var(--accent);
+      background: rgba(56, 189, 248, 0.11);
+      box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.35);
+    }
+
+    .stage-node.done {
+      border-color: rgba(34, 197, 94, 0.5);
+      background: rgba(34, 197, 94, 0.08);
+    }
+
+    .stage-tag {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--muted);
+      margin-bottom: 0.25rem;
+    }
+
+    .stage-title {
+      font-weight: 700;
+      font-size: 0.92rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .stage-count {
+      font-size: 0.78rem;
+      color: var(--muted-2);
+    }
+
+    .sim-detail {
+      background: #0c1226;
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      border-radius: 12px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .sim-detail-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      margin-bottom: 0.45rem;
+    }
+
+    .sim-detail-head strong {
+      color: var(--accent);
+      font-size: 0.98rem;
+    }
+
+    .sim-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      align-items: center;
+    }
+
+    .action-btn {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #061024;
+      font-weight: 800;
+      border: none;
+      border-radius: 10px;
+      padding: 0.55rem 1rem;
+      font-size: 0.86rem;
+      cursor: pointer;
+    }
+
+    .action-btn:hover {
+      filter: brightness(1.06);
+    }
+
+    .secondary-btn {
+      background: var(--card-2);
+      color: var(--text);
+      font-weight: 600;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.55rem 0.9rem;
+      font-size: 0.86rem;
+      cursor: pointer;
+    }
+
+    /* Concepts & Tips */
+    .cards-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+      gap: 1rem;
+    }
+
+    .info-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.1rem;
+      box-shadow: var(--shadow);
+    }
+
+    .info-card h3 {
+      font-size: 1rem;
+      margin-bottom: 0.45rem;
+      color: var(--accent);
+    }
+
+    .info-card p, .info-card li {
+      font-size: 0.9rem;
+      color: var(--muted-2);
+    }
+
+    .info-card ul {
+      padding-left: 1.15rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+    }
+
+    .checkpoint-box {
+      margin-top: 0.65rem;
+      background: #0c1226;
+      border-left: 3px solid var(--warn);
+      border-radius: 8px;
+      padding: 0.7rem 0.85rem;
+      font-size: 0.86rem;
+      color: #fde68a;
+    }
+
+    footer {
+      max-width: 1180px;
+      margin: 2rem auto 0;
+      padding: 1.25rem;
+      border-top: 1px solid var(--border);
+      color: var(--muted-2);
+      font-size: 0.84rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 0.75rem;
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <span class="brand-badge">4.º TALLER</span>
+        <span>GitHub · Git · Vercel</span>
+      </div>
+      <nav class="nav-links" aria-label="Navegación del taller">
+        <a href="#presentacion">Presentación</a>
+        <a href="#comandos">Comandos</a>
+        <a href="#simulador">Flujo Interactivo</a>
+        <a href="#conceptos">Conceptos y Tips</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-top">
+        <span class="pill">Secundaria Técnica en Informática · 4.º Año</span>
+        <span class="pill">Flujo práctico de 40 min</span>
+      </div>
+      <h1>Guía y comandos rápidos para GitHub, VS Code y Vercel</h1>
+      <p>
+        Espacio de apoyo para el taller: cuenta y repositorio en GitHub, configuración global en Visual Studio Code,
+        comandos esenciales para subir y sincronizar código, y despliegue directo en Vercel sin tocar configuraciones avanzadas.
+      </p>
+      <div class="quick-links">
+        <a class="btn-link" href="https://github.com/" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a class="btn-link" href="https://code.visualstudio.com/" target="_blank" rel="noopener noreferrer">Visual Studio Code</a>
+        <a class="btn-link" href="https://git-scm.com/" target="_blank" rel="noopener noreferrer">Git</a>
+        <a class="btn-link" href="https://vercel.com/" target="_blank" rel="noopener noreferrer">Vercel</a>
+      </div>
+    </section>
+
+    <!-- Presentación incrustada -->
+    <section id="presentacion" class="section">
+      <div class="section-header">
+        <h2>Presentación del taller</h2>
+        <p>Diapositivas de apoyo proyectadas y disponibles durante la clase.</p>
+      </div>
+      <div class="slide-card">
+        <div class="slide-frame-wrap">
+          <iframe
+            src="https://docs.google.com/presentation/d/e/2PACX-1vQZL77vizWN9G7OF3DeIP_OWF3m39PvFdgLuDE9annPCXlsR0pgM2jFXoxx1uqzmna8dnan5ZxWfbJl/pubembed?start=false&loop=false&delayms=10000"
+            frameborder="0"
+            width="960"
+            height="569"
+            allowfullscreen="true"
+            mozallowfullscreen="true"
+            webkitallowfullscreen="true"
+          ></iframe>
+        </div>
+      </div>
+    </section>
+
+    <!-- Comandos copiables -->
+    <section id="comandos" class="section">
+      <div class="section-header">
+        <h2>Comandos listos para copiar</h2>
+        <p>Podés completar tus datos abajo para que se actualicen automáticamente en los bloques de comandos.</p>
+      </div>
+
+      <div class="personalizer-bar" aria-label="Personalizar datos de ejemplo">
+        <div class="field">
+          <label for="inp-name">Nombre de usuario (Git global)</label>
+          <input id="inp-name" type="text" value="Tu Nombre" />
+        </div>
+        <div class="field">
+          <label for="inp-email">Correo de GitHub (Git global)</label>
+          <input id="inp-email" type="email" value="tu-correo@ejemplo.com" />
+        </div>
+        <div class="field">
+          <label for="inp-repo-url">URL del repositorio en GitHub</label>
+          <input id="inp-repo-url" type="text" value="https://github.com/IvanBrianCruz/Uber_Clon.git" />
+        </div>
+      </div>
+
+      <div class="cmd-grid">
+        <!-- 0. Config global VS Code -->
+        <article class="cmd-card">
+          <div class="cmd-card-top">
+            <div>
+              <h3>0. Configuración global en VS Code</h3>
+              <p class="desc">Se hace una vez en la PC para identificar quién firma los commits.</p>
+            </div>
+            <button class="copy-btn" type="button" data-copy-target="cmd-config">Copiar</button>
+          </div>
+          <pre id="cmd-config" class="code-box"></pre>
+        </article>
+
+        <!-- 1. Clonar -->
+        <article class="cmd-card">
+          <div class="cmd-card-top">
+            <div>
+              <h3>1. Clonar el repositorio en tu netbook</h3>
+              <p class="desc">Solo necesitás hacerlo una vez en la netbook para traer tu código desde GitHub y crear la carpeta del proyecto.</p>
+            </div>
+            <button class="copy-btn" type="button" data-copy-target="cmd-clone">Copiar</button>
+          </div>
+          <pre id="cmd-clone" class="code-box"></pre>
+        </article>
+
+        <!-- 2. Primera subida -->
+        <article class="cmd-card">
+          <div class="cmd-card-top">
+            <div>
+              <h3>2. Crear proyecto y subir por primera vez a GitHub</h3>
+              <p class="desc">Inicializa Git en la carpeta local, vincula el remoto y sube el primer punto de guardado.</p>
+            </div>
+            <button class="copy-btn" type="button" data-copy-target="cmd-first-push">Copiar</button>
+          </div>
+          <pre id="cmd-first-push" class="code-box"></pre>
+        </article>
+
+        <!-- 3. Rutina diaria / cambio de PC -->
+        <article class="cmd-card">
+          <div class="cmd-card-top">
+            <div>
+              <h3>3. Rutina al cambiar de PC o trabajar a diario</h3>
+              <p class="desc">Traé lo último antes de programar, editá y sincronizá tus cambios al terminar.</p>
+            </div>
+            <button class="copy-btn" type="button" data-copy-target="cmd-routine">Copiar</button>
+          </div>
+          <pre id="cmd-routine" class="code-box"></pre>
+        </article>
+
+        <!-- 4. Commits diarios -->
+        <article class="cmd-card">
+          <div class="cmd-card-top">
+            <div>
+              <h3>4. Commits diarios para registrar el avance</h3>
+              <p class="desc">Secuencia rápida para guardar checkpoints del progreso en el repositorio.</p>
+            </div>
+            <button class="copy-btn" type="button" data-copy-target="cmd-daily-commit">Copiar</button>
+          </div>
+          <pre id="cmd-daily-commit" class="code-box"></pre>
+        </article>
+      </div>
+    </section>
+
+    <!-- Simulador interactivo de flujo -->
+    <section id="simulador" class="section">
+      <div class="section-header">
+        <h2>Simulador interactivo de flujo de trabajo</h2>
+        <p>Visualizá cómo viajan los cambios entre tu carpeta en VS Code, el área de preparación, el historial local y GitHub.</p>
+      </div>
+
+      <div class="sim-box">
+        <div class="mode-tabs" role="tablist">
+          <button class="tab-btn active" type="button" data-mode="daily">Flujo diario / Cambio de PC</button>
+          <button class="tab-btn" type="button" data-mode="first">Primera subida desde cero</button>
+        </div>
+
+        <div class="pipeline" id="pipeline-nodes">
+          <div class="stage-node" data-stage="0">
+            <div class="stage-tag">Paso 1 · Local</div>
+            <div class="stage-title">Directorio de trabajo</div>
+            <div class="stage-count" id="cnt-0">0 archivos editados</div>
+          </div>
+          <div class="stage-node" data-stage="1">
+            <div class="stage-tag">Paso 2 · Staging</div>
+            <div class="stage-title">Área de preparación</div>
+            <div class="stage-count" id="cnt-1">0 listos (git add .)</div>
+          </div>
+          <div class="stage-node" data-stage="2">
+            <div class="stage-tag">Paso 3 · Local</div>
+            <div class="stage-title">Historial local</div>
+            <div class="stage-count" id="cnt-2">0 commits guardados</div>
+          </div>
+          <div class="stage-node" data-stage="3">
+            <div class="stage-tag">Paso 4 · Nube</div>
+            <div class="stage-title">Repositorio GitHub</div>
+            <div class="stage-count" id="cnt-3">0 sincronizados</div>
+          </div>
+        </div>
+
+        <div class="sim-detail">
+          <div class="sim-detail-head">
+            <strong id="sim-step-title">Paso 1: Descargar o editar en tu carpeta</strong>
+            <code id="sim-step-cmd" style="color: var(--accent); font-size: 0.85rem;">git pull origin main</code>
+          </div>
+          <p id="sim-step-desc" style="color: var(--muted-2); font-size: 0.9rem;">
+            Si cambiás de computadora o retomás el proyecto, primero traé los últimos cambios desde GitHub con <code>git pull origin main</code> y luego editá tus archivos en VS Code.
+          </p>
+        </div>
+
+        <div class="sim-controls">
+          <button class="action-btn" id="btn-next-step" type="button">Ejecutar siguiente paso</button>
+          <button class="secondary-btn" id="btn-reset-sim" type="button">Reiniciar simulación</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Conceptos clave y consejos -->
+    <section id="conceptos" class="section">
+      <div class="section-header">
+        <h2>Conceptos clave y consejos para el taller</h2>
+        <p>Ideas claras para recordar durante la práctica y evitar trabas comunes.</p>
+      </div>
+
+      <div class="cards-2">
+        <article class="info-card">
+          <h3>¿Qué es un commit? (Punto de guardado)</h3>
+          <p>
+            Hacer un <strong>commit</strong> es como hacer un <strong>punto de guardado en un videojuego</strong>:
+            dejás registrada una foto estable del avance antes de probar algo nuevo.
+          </p>
+          <div class="checkpoint-box">
+            <strong>Tip de programador:</strong> hacé commits chicos y claros (por ejemplo, <code>"Agrega encabezado HTML"</code> o <code>"Corrige estilos de tarjeta"</code>) en lugar de esperar a tener todo terminado.
+          </div>
+        </article>
+
+        <article class="info-card">
+          <h3>Consejos prácticos para la clase de 40 min</h3>
+          <ul>
+            <li><strong>Revisá el correo global:</strong> usá el mismo email con el que creaste la cuenta de GitHub al configurar <code>git config --global user.email</code>.</li>
+            <li><strong>Verificá la carpeta:</strong> antes de correr comandos Git en la terminal de VS Code, asegurate de estar parado dentro de la carpeta del proyecto.</li>
+            <li><strong>Atento a la rama:</strong> fijate si tu repositorio usa <code>main</code> o <code>master</code> al hacer <code>pull</code> o <code>push</code>.</li>
+            <li><strong>Cierre rápido en Vercel:</strong> iniciá sesión con GitHub, importá el repo y desplegá con los valores por defecto sin tocar configuraciones.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <span>Taller de GitHub, Git y Vercel · 4.º Año Secundaria Técnica</span>
+    <span><a href="#presentacion">Volver arriba</a></span>
+  </footer>
+
+  <script>
+    (function () {
+      const inpName = document.getElementById("inp-name");
+      const inpEmail = document.getElementById("inp-email");
+      const inpRepoUrl = document.getElementById("inp-repo-url");
+
+      const elConfig = document.getElementById("cmd-config");
+      const elClone = document.getElementById("cmd-clone");
+      const elFirstPush = document.getElementById("cmd-first-push");
+      const elRoutine = document.getElementById("cmd-routine");
+      const elDailyCommit = document.getElementById("cmd-daily-commit");
+
+      function renderCommands() {
+        const name = (inpName.value || "Tu Nombre").trim();
+        const email = (inpEmail.value || "tu-correo@ejemplo.com").trim();
+        const repoUrl = (inpRepoUrl.value || "https://github.com/IvanBrianCruz/Uber_Clon.git").trim();
+
+        elConfig.textContent =
+`git config --global user.name "${name}"
+git config --global user.email "${email}"`;
+
+        elClone.textContent =
+`git clone ${repoUrl}`;
+
+        elFirstPush.textContent =
+`git init
+git remote add origin ${repoUrl}
+git add .
+git commit -m "Primer commit"
+git branch -M master
+git push -u origin master`;
+
+        elRoutine.textContent =
+`git pull origin main
+git add .
+git commit -m "Mensaje"
+git push origin main`;
+
+        elDailyCommit.textContent =
+`git add .
+git commit -m "Primer commit"
+git push -u origin master`;
+      }
+
+      [inpName, inpEmail, inpRepoUrl].forEach((input) => {
+        input.addEventListener("input", renderCommands);
+      });
+      renderCommands();
+
+      // Copy buttons
+      document.querySelectorAll(".copy-btn").forEach((btn) => {
+        btn.addEventListener("click", async () => {
+          const targetId = btn.getAttribute("data-copy-target");
+          const pre = document.getElementById(targetId);
+          if (!pre) return;
+
+          const text = pre.textContent;
+          try {
+            await navigator.clipboard.writeText(text);
+          } catch {
+            const ta = document.createElement("textarea");
+            ta.value = text;
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand("copy");
+            document.body.removeChild(ta);
+          }
+
+          const prevText = btn.textContent;
+          btn.textContent = "¡Copiado!";
+          btn.classList.add("copied");
+          setTimeout(() => {
+            btn.textContent = prevText;
+            btn.classList.remove("copied");
+          }, 1400);
+        });
+      });
+
+      // Interactive Flow Simulator
+      const flows = {
+        daily: [
+          {
+            title: "Paso 1: Traer cambios y editar en tu carpeta",
+            cmd: "git pull origin main",
+            desc: "Descargás la última versión desde GitHub (útil al cambiar de PC) y editás tus archivos en VS Code.",
+            counts: ["1 archivo modificado", "0 listos (git add .)", "0 commits guardados", "Sincronizado"]
+          },
+          {
+            title: "Paso 2: Preparar los cambios (Staging)",
+            cmd: "git add .",
+            desc: "Marcás todos los archivos modificados para incluirlos en el próximo punto de guardado.",
+            counts: ["1 archivo modificado", "1 listo (git add .)", "0 commits guardados", "Pendiente push"]
+          },
+          {
+            title: "Paso 3: Crear punto de guardado local",
+            cmd: 'git commit -m "Actualiza index.html"',
+            desc: "Guardás el snapshot en tu historial local de Git con un mensaje descriptivo.",
+            counts: ["Limpio", "0 listos", "1 commit guardado", "Listo para subir"]
+          },
+          {
+            title: "Paso 4: Subir a GitHub",
+            cmd: "git push origin main",
+            desc: "Enviás tu commit a GitHub para respaldarlo y tenerlo disponible en cualquier equipo.",
+            counts: ["Limpio", "0 listos", "1 commit guardado", "Subido a GitHub"]
+          }
+        ],
+        first: [
+          {
+            title: "Paso 1: Inicializar Git y conectar el repositorio",
+            cmd: "git init && git remote add origin URL_DEL_REPO_GITHUB",
+            desc: "Activás Git en la carpeta de tu proyecto y la vinculás con el repositorio creado en GitHub.",
+            counts: ["Carpeta iniciada", "0 listos", "0 commits", "Remoto vinculado"]
+          },
+          {
+            title: "Paso 2: Agregar todos los archivos",
+            cmd: "git add .",
+            desc: "Preparás todos los archivos iniciales del proyecto para el primer commit.",
+            counts: ["Archivos listos", "Todos agregados", "0 commits", "Pendiente commit"]
+          },
+          {
+            title: "Paso 3: Guardar el primer commit",
+            cmd: 'git commit -m "Primer commit"',
+            desc: "Registrás el primer punto de guardado de tu proyecto.",
+            counts: ["Limpio", "0 listos", "1 commit creado", "Listo para push"]
+          },
+          {
+            title: "Paso 4: Definir rama y subir a GitHub",
+            cmd: "git branch -M master && git push -u origin master",
+            desc: "Asegurás la rama y subís el proyecto por primera vez al repositorio de GitHub.",
+            counts: ["Limpio", "0 listos", "1 commit creado", "Publicado en GitHub"]
+          }
+        ]
+      };
+
+      let currentMode = "daily";
+      let stepIndex = 0;
+
+      const stageNodes = Array.from(document.querySelectorAll(".stage-node"));
+      const cntEls = [
+        document.getElementById("cnt-0"),
+        document.getElementById("cnt-1"),
+        document.getElementById("cnt-2"),
+        document.getElementById("cnt-3")
+      ];
+      const stepTitleEl = document.getElementById("sim-step-title");
+      const stepCmdEl = document.getElementById("sim-step-cmd");
+      const stepDescEl = document.getElementById("sim-step-desc");
+      const btnNext = document.getElementById("btn-next-step");
+      const btnReset = document.getElementById("btn-reset-sim");
+
+      function updateSimulator() {
+        const steps = flows[currentMode];
+        const activeStep = steps[stepIndex];
+
+        stepTitleEl.textContent = activeStep.title;
+        stepCmdEl.textContent = activeStep.cmd;
+        stepDescEl.textContent = activeStep.desc;
+
+        stageNodes.forEach((node, idx) => {
+          node.classList.remove("active", "done");
+          if (idx < stepIndex) node.classList.add("done");
+          else if (idx === stepIndex) node.classList.add("active");
+          cntEls[idx].textContent = activeStep.counts[idx];
+        });
+      }
+
+      document.querySelectorAll(".tab-btn").forEach((tab) => {
+        tab.addEventListener("click", () => {
+          document.querySelectorAll(".tab-btn").forEach((t) => t.classList.remove("active"));
+          tab.classList.add("active");
+          currentMode = tab.getAttribute("data-mode");
+          stepIndex = 0;
+          updateSimulator();
+        });
+      });
+
+      btnNext.addEventListener("click", () => {
+        const steps = flows[currentMode];
+        stepIndex = (stepIndex + 1) % steps.length;
+        updateSimulator();
+      });
+
+      btnReset.addEventListener("click", () => {
+        stepIndex = 0;
+        updateSimulator();
+      });
+
+      updateSimulator();
+    })();
+  </script>
+</body>
+</html>
